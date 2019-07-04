@@ -5,6 +5,9 @@ function clickY(val) {
 
 $(function() {
   var detailChart;
+  var detailData1 = [];
+  var detailData2 = [];
+  var categories = [];
 
   // create the detail chart
   function createDetail(masterChart, data) {
@@ -12,83 +15,107 @@ $(function() {
       var detailData = [],
           detailStart = data[0][0];
 
+
           // console.log(data[0][0])
 
       $.each(masterChart.series[0].data, function () {
           if (this.x >= detailStart) {
               // console.log(this.Baseline)
               detailData.push(this.y);
+              categories.push(this.x);
           }
       });
 
+      for (var i = 0; i < detailData.length/2; i++) {
+          detailData1.push(detailData[i]);
+          categories.pop();
+      }
+
+      for (var i = detailData.length/2; i < detailData.length; i++) {
+          detailData2.push(detailData[i]);
+      }
+
+      console.log("detailData", detailData2)
+      console.log("detailData1", detailData1)
+      console.log("categories", categories)
+
       // create a detail chart referenced by a global variable
       detailChart = Highcharts.chart('detail-container', {
-          chart: {
-              marginBottom: 120,
-              reflow: false,
-              marginLeft: 50,
-              marginRight: 20,
-              style: {
-                  position: 'absolute'
-              }
-          },
-          credits: {
-              enabled: false
-          },
-          title: {
-              text: 'CSV file convertor',
-              align: 'left',
-          },
-          subtitle: {
-              text: 'Select an area by dragging across the lower chart',
-              align: 'left'
-          },
-          xAxis: {
-              type: 'datetime'
-          },
-          yAxis: {
-              title: {
-                  text: null
-              },
-              maxZoom: 0.1
-          },
-          tooltip: {
-              formatter: function () {
-                  var point = this.points[0];
-                  // console.log(this.Baseline)
-                  return Highcharts.dateFormat('%A %B %e %Y', this.x) + ':<br/>' + Highcharts.numberFormat(point.y, 2);
-              },
-              shared: true
-          },
-          legend: {
-              enabled: false
-          },
-          plotOptions: {
-              series: {
-                  marker: {
-                      enabled: false,
-                      states: {
-                          hover: {
-                              enabled: true,
-                              radius: 3
-                          }
-                      }
-                  }
-              }
-          },
-          series: [{
-              name: '',
-              pointStart: detailStart,
-              pointInterval: 24 * 3600 * 1000,
-              data: detailData
-          }],
+        chart: {
+            type: 'area',
+            marginBottom: 120,
+            reflow: false,
+            marginLeft: 50,
+            marginRight: 20,
+            style: {
+                position: 'absolute'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        title: {
+            text: 'CSV file convertor',
+            align: 'left',
+        },
+        subtitle: {
+            text: 'Select an area by dragging across the lower chart',
+            align: 'left'
+        },
+        xAxis: {
+            // categories: categories,
+            type: 'datetime'
+        },
 
-          exporting: {
-              enabled: false
-          }
+        yAxis: {
+            title: {
+                text: null
+            },
+            maxZoom: 0.1
+        },
+        tooltip: {
+        crosshairs: true,
+        shared: true
+        },
+        legend: {
+        enabled: false
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    radius: 4,
+                    lineColor: '#666666',
+                    lineWidth: 1
+                }
+            },
+            area: {
+                stacking: 'normal',
+                lineColor: '#666666',
+                lineWidth: 1,
+                marker: {
+                    lineWidth: 1,
+                    lineColor: '#666666'
+                }
+            }
+        },
+        series: [{
+        name: 'Actual',
+        marker: {
+            symbol: 'square'
+        },
+        data: detailData1
+        // data: detailData.slice(0, detailData.length/2)
 
-      }); // return chart
-  }
+        }, {
+        name: 'Baseline',
+        marker: {
+            symbol: 'diamond'
+        },
+        data: detailData2
+        // data: detailData.slice(detailData.length/2, detailData.length)
+        }]
+        });
+    }
 
   // create the master chart
   function createMaster(data) {
@@ -111,13 +138,16 @@ $(function() {
                           detailData = [],
                           xAxis = this.xAxis[0];
 
-                      // console.log(extremesObject)
-
+                        while( detailData1.length > 0 ) {
+                            detailData1.pop();
+                            detailData2.pop();
+                            categories.pop();
+                        }
                       // reverse engineer the last part of the data
                       $.each(this.series[0].data, function () {
-                          console.log(this)
                           if (this.x > min && this.x < max) {
                               detailData.push([this.x, this.y]);
+                              categories.push(this.x);
                           }
                       });
 
@@ -138,12 +168,28 @@ $(function() {
                           color: 'rgba(0, 0, 0, 0.2)'
                       });
 
+                      for (var i = 0; i < detailData.length/2; i++) {
+                        detailData1.push(detailData[i]);
+                        categories.pop();
+                      }
+             
+                      for (var i = detailData.length/2; i < detailData.length; i++) {
+                          detailData2.push(detailData[i]);
+                      }
+                    
+                    console.log("detailData", detailData2)
+                    console.log("detailData1", detailData1)
+                    console.log("categories", categories)
+                    detailChart.series[0].setData(detailData1);
+                    detailChart.series[1].setData(detailData2);
+                    // detailChart.series[0].setData(detailData1);
+                    // detailChart.series[0].setData(detailData2);
+                    console.log(detailChart.series[0].detailData1);
+                    console.log(detailChart.series[1].detailData2);
 
-                      detailChart.series[0].setData(detailData);
+                    console.log("detailsChart", detailChart)
 
-                      console.log(detailData)
-
-                      return false;
+                    return false;
                   }
               }
           },
@@ -222,6 +268,7 @@ $(function() {
           }
 
       }, function (masterChart) {
+          console.log("come here?")
           createDetail(masterChart, data);
       }); // return chart instance
   }
@@ -264,17 +311,25 @@ $(function() {
           parseFloat(v['Baseline'].replace(',', '.'))
         ];
       })
-      // console.log(obj1)
-      // var obj = obj1.concat(obj2)
 
-      if (flag == 1) {
-        createMaster(obj1)
-      }
+      console.log(obj1)
+      console.log("-------------------------")
+      console.log(obj2)
+      console.log("-------------------------")
+      console.log(obj1.concat(obj2))
 
-      if (flag ==2) {
-        createMaster(obj2)
-      }
+      var obj = obj1.concat(obj2);
+      createMaster(obj);
+    //   if (flag == 1) {
+    //     // createMaster(obj1)
+    //     createMaster(obj1.concat(obj2))
+    //   }
+
+    //   if (flag ==2) {
+    //     createMaster(obj2)
+    //   }
     };
+
     reader.readAsText(file);
   });
 

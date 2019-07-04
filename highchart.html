@@ -4,16 +4,22 @@
 			<script src="https://code.highcharts.com/highcharts.js"></script>
 			<script src="https://code.highcharts.com/modules/exporting.js"></script>
 			<script src="https://code.highcharts.com/modules/export-data.js"></script>
+			<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	
+			<!-- Additional files for the Highslide popup effect -->
+			<script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
+			<script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
+			<link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" />
     </head>
     <body>
 			<form>
 				<input type="file" id="input1" />
 				<!-- <input type="file" id="input2" /> -->
 				<button type="submit">Display</button>
-				<div style="margin-left: 50%">
+				<!-- <div style="margin-left: 50%">
 					<button type="submit" onclick="clickY(1)" style="cursor: pointer">Y1</button>
 					<button type="submit" onclick="clickY(2)" style="cursor: pointer">Y2</button>
-				</div>
+				</div> -->
 			</form>
 			<hr>
 			<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">

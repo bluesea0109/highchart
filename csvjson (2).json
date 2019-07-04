@@ -1,0 +1,38 @@
+[
+  {
+    "Jaar": 2014,
+    "Maand": 9,
+    "dag": 1,
+    "Periode": 1,
+    "Begin": "1-9-2014",
+    "Eind": "1-9-2014",
+    "Tijdsduur (Dagen)": 1,
+    "Naam gebeurtenis": "EE-EF OVVIA prestatiecontract operationeel",
+    "Beschrijving": "WTW, Warmtepompen, regeling etc.",
+    "Status": "Operationeel"
+  },
+  {
+    "Jaar": 2016,
+    "Maand": 11,
+    "dag": 1,
+    "Periode": 2,
+    "Begin": "1-11-2016",
+    "Eind": "1-11-2016",
+    "Tijdsduur (Dagen)": 1,
+    "Naam gebeurtenis": "EH Design Academy WTW",
+    "Beschrijving": "EH Design Academy WTW geinstalleerd en operationeel",
+    "Status": "Operationeel"
+  },
+  {
+    "Jaar": 2017,
+    "Maand": 12,
+    "dag": 12,
+    "Periode": 3,
+    "Begin": "12-12-2017",
+    "Eind": "12-12-2017",
+    "Tijdsduur (Dagen)": 1,
+    "Naam gebeurtenis": "Regeltechniek",
+    "Beschrijving": "Regeltechniek aangepast naar WebEasy in geheel WDM",
+    "Status": "Operationeel"
+  }
+]
